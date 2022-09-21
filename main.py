@@ -20,7 +20,7 @@ import modules.machinelearning as ml
 # task1.learning()
 # task1.show_graphic()
 # print(task1.check_result([[10, 40], [40, 1]]))
-
+#####################
 # task2 = ml.Division_By_Three_Category(
 #     {
 #         "x": [
@@ -40,7 +40,7 @@ import modules.machinelearning as ml
 # )
 # task2.learning()
 # task2.show_graphic()
-
+#####################
 # task3 = ml.Division_By_Three_Category_SGD(
 #     {
 #         "x": [
@@ -62,3 +62,4 @@ import modules.machinelearning as ml
 # task3.show_graphic()
 # print(task3.check_result([[10, 40], [40, 1]]))
 # task3.show_graphic_of_q_plot()
+#####################
