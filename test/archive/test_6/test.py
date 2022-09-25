@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow.keras.datasets import mnist  # библиотека базы выборок Mnist
 from tensorflow import keras
-from tensorflow.keras.layers import Dense, Flatten
+from tensorflow.keras.layers import Dense, Flatten, Dropout, BatchNormalization
 from sklearn.model_selection import train_test_split
 
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
@@ -32,13 +32,16 @@ model = keras.Sequential(
     [
         Flatten(input_shape=(28, 28, 1)),
         Dense(21, activation="relu"),
+        Dropout(0.5),
+        BatchNormalization(),
         Dense(21, activation="relu"),
+        Dropout(0.5),
+        BatchNormalization(),
         Dense(10, activation="softmax"),
     ]
 )
 
 print(model.summary())  # вывод структуры НС в консоль
-
 model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
 
 x_train, x_val, y_train_cat, y_val = train_test_split(

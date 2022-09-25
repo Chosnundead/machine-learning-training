@@ -5,7 +5,14 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import numpy as np
 import matplotlib.pyplot as plt
 import keras as ks
-from keras.layers import Dense, Flatten
+from keras.layers import (
+    Dense,
+    Flatten,
+    Conv2D,
+    MaxPooling2D,
+    Dropout,
+    BatchNormalization,
+)
 from keras.datasets import cifar10
 from keras.optimizers import Adam
 from pathlib import Path
@@ -57,23 +64,31 @@ def create_model():
 
     model = ks.Sequential(
         [
-            Flatten(input_shape=(32, 32, 3)),
+            Conv2D(
+                64, (4, 4), padding="same", activation="relu", input_shape=(32, 32, 3)
+            ),
+            MaxPooling2D((2, 2), strides=2),
+            Conv2D(128, (4, 4), padding="same", activation="relu"),
+            MaxPooling2D((2, 2), strides=2),
+            Flatten(),
+            Dense(255, activation="relu"),
+            Dropout(0.3),
+            Dense(255, activation="relu"),
+            Dropout(0.3),
             Dense(128, activation="relu"),
-            Dense(128, activation="relu"),
-            Dense(128, activation="relu"),
-            Dense(66, activation="relu"),
-            Dense(21, activation="relu"),
+            Dropout(0.4),
+            BatchNormalization(),
             Dense(10, activation="softmax"),
         ]
     )
     print(model.summary())
 
     model.compile(
-        optimizer=Adam(learning_rate=0.00001),
+        optimizer=Adam(learning_rate=0.0001),
         loss="categorical_crossentropy",
         metrics=["accuracy"],
     )
-    model.fit(x_train, y_train, batch_size=21, epochs=10, validation_split=0.2)
+    model.fit(x_train, y_train, batch_size=21, epochs=6, validation_split=0.2)
 
     model.evaluate(x_test, y_test)
 
